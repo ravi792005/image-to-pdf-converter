@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: image-to-pdf-server
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: CLIENT_ORIGIN
+        sync: false # set this to your Vercel URL after the frontend is deployed
+      - key: MAX_FILE_SIZE_MB
+        value: 20
+      - key: MAX_TOTAL_SIZE_MB
+        value: 100
+      - key: MAX_FILES
+        value: 50
+      - key: FILE_RETENTION_MINUTES
+        value: 5
+      - key: RATE_LIMIT_WINDOW_MINUTES
+        value: 15
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
