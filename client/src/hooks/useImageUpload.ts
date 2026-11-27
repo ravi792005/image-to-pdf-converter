@@ -19,6 +19,11 @@ export function useImageUpload() {
 
   const clearError = useCallback(() => setErrorMessage(null), []);
 
+  const rejectFiles = useCallback((message: string) => {
+    setErrorMessage(message);
+    setStatus("error");
+  }, []);
+
   const validateFiles = useCallback((files: File[]): string | null => {
     for (const file of files) {
       if (!ACCEPTED_TYPES.includes(file.type)) {
@@ -132,6 +137,7 @@ export function useImageUpload() {
     errorMessage,
     downloadUrl,
     addFiles,
+    rejectFiles,
     removeImage,
     reorderImages,
     rotateImage,

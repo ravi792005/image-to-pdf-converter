@@ -4,15 +4,29 @@ import { UploadCloud } from "lucide-react";
 
 interface DropzoneProps {
   onFilesAccepted: (files: File[]) => void;
+  onFilesRejected?: (message: string) => void;
   disabled?: boolean;
 }
 
-export default function Dropzone({ onFilesAccepted, disabled }: DropzoneProps): JSX.Element {
+export default function Dropzone({
+  onFilesAccepted,
+  onFilesRejected,
+  disabled,
+}: DropzoneProps): JSX.Element {
   const onDrop = useCallback(
-    (acceptedFiles: File[], _rejections: FileRejection[]) => {
+    (acceptedFiles: File[], rejections: FileRejection[]) => {
       if (acceptedFiles.length > 0) onFilesAccepted(acceptedFiles);
+
+      if (rejections.length > 0) {
+        const first = rejections[0];
+        const reason = first.errors[0]?.message;
+        const message = reason
+          ? `${first.file.name}: ${reason}`
+          : `${first.file.name} is not a supported file.`;
+        onFilesRejected?.(message);
+      }
     },
-    [onFilesAccepted]
+    [onFilesAccepted, onFilesRejected]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

@@ -24,6 +24,7 @@ export default function Home(): JSX.Element {
     errorMessage,
     downloadUrl,
     addFiles,
+    rejectFiles,
     removeImage,
     reorderImages,
     rotateImage,
@@ -57,7 +58,11 @@ export default function Home(): JSX.Element {
         <div className="mx-auto max-w-4xl space-y-6">
           {errorMessage && <ErrorBanner message={errorMessage} onDismiss={clearError} />}
 
-          <Dropzone onFilesAccepted={addFiles} disabled={isUploading || isConverting} />
+          <Dropzone
+            onFilesAccepted={addFiles}
+            onFilesRejected={rejectFiles}
+            disabled={isUploading || isConverting}
+          />
 
           {isUploading && <ProgressBar percent={progress} label="Uploading images…" />}
 
